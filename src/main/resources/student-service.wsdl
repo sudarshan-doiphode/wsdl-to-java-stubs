@@ -1,0 +1,69 @@
+<definitions name="StudentService"
+             targetNamespace="http://example.com/student"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://example.com/student"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <types>
+        <xsd:schema targetNamespace="http://example.com/student">
+            <xsd:element name="GetStudentRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="studentId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="GetStudentResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="student">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="id" type="xsd:int"/>
+                                    <xsd:element name="name" type="xsd:string"/>
+                                    <xsd:element name="age" type="xsd:int"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+
+    <message name="GetStudentRequest">
+        <part name="parameters" element="tns:GetStudentRequest"/>
+    </message>
+    <message name="GetStudentResponse">
+        <part name="parameters" element="tns:GetStudentResponse"/>
+    </message>
+
+    <portType name="StudentPortType">
+        <operation name="getStudent">
+            <input message="tns:GetStudentRequest"/>
+            <output message="tns:GetStudentResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="StudentBinding" type="tns:StudentPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getStudent">
+            <soap:operation soapAction="getStudent"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="StudentService">
+        <port name="StudentPort" binding="tns:StudentBinding">
+            <soap:address location="http://example.com/student-service"/>
+        </port>
+    </service>
+
+</definitions>
